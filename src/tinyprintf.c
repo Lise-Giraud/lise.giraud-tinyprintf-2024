@@ -50,7 +50,7 @@ void str_revert(char str[])
 
 void my_itoa_base(int n, const char *base, char negative, int written)
 {
-    char s[500];
+    char s[500] = { 0 };
     int i = 0;
     int lb = len(base);
     if (n == 0)
@@ -142,4 +142,9 @@ int tinyprintf(const char *format, ...)
     va_end(arg);
     fflush(stdout);
     return written;
+}
+
+int main(void)
+{
+    tinyprintf(":%d", 0);
 }
