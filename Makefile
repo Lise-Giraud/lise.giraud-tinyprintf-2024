@@ -7,13 +7,13 @@ all: tinyprintf check
 tinyprintf: tinyprintf.o
 	$(CC) -o tinyprintf tinyprintf.o
 
-tinyprintf.o: tinyprintf.c
+tinyprintf.o: src/tinyprintf.c
 	$(CC) $(CFLAGS) -c -o tinyprintf.o src/tinyprintf.c
 
-check: check.o
-	$(CC) $(LDFLAGS) -o check tinyprintf.o check.o
+check: check.o tinyprintf.o
+	$(CC) $(LDFLAGS) -c -o check tinyprintf.o check.o
 
-check.o: check.c
+check.o: tests/check.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -c -o check.o tests/check.c
 
 clean:
