@@ -1,18 +1,18 @@
-$CC=gcc
-$CFLAGS=-std=c99 -pedantic -Werror -Wall -Wextra
-$LDFLAGS=-lcriterion -fsanitize=address
+CC=gcc
+CFLAGS=-Wextra -Wall -Werror -std=c99 -pedantic
+LDFLAGS=-lcriterion
+BINARY=tinyprintf
 
-tinyprintf: tinyprintf.o
-	$(CC) -o tinyprintf tinyprintf.o
+check:
+    $(CC) $(DBFLAGS) $(LDFLAGS) src/tinyprintf.c tests/*.c -o $(BINARY)
+    ./tinyprintf --verbose
 
-tinyprintf.o: src/tinyprintf.c
-	$(CC) $(CFLAGS) -c -o tinyprintf.o src/tinyprintf.c
-
-check: check.o tinyprintf
-	$(CC) $(LDFLAGS) -c -o check tinyprintf.o check.o
-
-check.o: tests/check.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -c -o check.o tests/check.c
+build: src/tinyprintf.o
+    $(CC) $(CFLAGS) -o $(BINARY) src/tinyprintf.o
 
 clean:
-	rm -r *.o
+    rm -f src/tinyprintf.o
+    rm -f tinyprintf
+
+src/tinyprintf.o: src/tinyprintf.c
+    $(CC) $(CFLAGS) -c -o src/tinyprintf.o src/tinyprintf.c
