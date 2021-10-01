@@ -4,6 +4,18 @@
 #include <stdio.h>
 #include "tinyprintf.h"
 
+int print(char *s, int written)
+{
+  int l = 0;
+  while (s[l])
+  {
+    putchar(s[l]);
+    written++;
+    l++;
+  }
+  return written;
+}
+
 int len(const char str[])
 {
   int l = 0;
@@ -30,16 +42,15 @@ void str_revert(char str[])
   }
 }
 
-void my_itoa_base(int n, const char *base, char negative)
+void my_itoa_base(int n, const char *base, char negative, int written)
 {
   char s[500];
   int i = 0;
   int lb = len(base);
   if (n == 0)
   {
-    s[i++] = '0';
-    s[i] = '\0';
-    tinyprintf(s);
+    s[i] = '0';
+    print(s, written);
   }
 
   if (n < 0 && lb == 10)
@@ -59,20 +70,7 @@ void my_itoa_base(int n, const char *base, char negative)
     s[i++] = '-';
   s[i] = '\0';
   str_revert(s);
-  tinyprintf(s);
-}
-
-int pstring(char *args, int written)
-{
-  int l = 0;
-  while (args[l])
-  {
-    putchar(args[l]);
-    written++;
-    l++;
-  }
-  return written;
-  ;
+  print(s, written);
 }
 
 int argument(const char *traverse, va_list args, unsigned int i, int j,
@@ -86,15 +84,15 @@ int argument(const char *traverse, va_list args, unsigned int i, int j,
     break;
   case 'd':
     j = va_arg(args, int);
-    j < 0 ? my_itoa_base(j, "0123456789", 1) :
-      my_itoa_base(j, "0123456789", 0);
+    j < 0 ? my_itoa_base(j, "0123456789", 1, written) :
+      my_itoa_base(j, "0123456789", 0, written);
     break;
   case 'u':
     i = va_arg(args, unsigned);
-    my_itoa_base(i, "0123456789", 0);
+    my_itoa_base(i, "0123456789", 0, written);
     break;
   case 's':
-    tinyprintf(va_arg(args, char *));
+    print(va_arg(args, char *), written);
     break;
   case 'c':
     putchar(va_arg(args, int));
@@ -102,11 +100,11 @@ int argument(const char *traverse, va_list args, unsigned int i, int j,
     break;
   case 'o':
     i = va_arg(args, unsigned);
-    my_itoa_base(i, "01234567", 0);
+    my_itoa_base(i, "01234567", 0, written);
     break;
   case 'x':
     i = va_arg(args, unsigned);
-    my_itoa_base(i, "0123456789abcdef", 0);
+    my_itoa_base(i, "0123456789abcdef", 0, written);
     break;
   }
   return written;
