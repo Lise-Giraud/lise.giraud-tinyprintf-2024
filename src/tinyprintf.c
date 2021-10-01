@@ -1,14 +1,17 @@
+#include "tinyprintf.h"
 #include <assert.h>
 #include <errno.h>
 #include <stddef.h>
 #include <stdio.h>
-#include "tinyprintf.h"
 
-int print(char *s, int written)
-{
+int print(char *s, int written) {
   int l = 0;
-  while (s[l])
+  if (s == NULL)
   {
+    fputs("(null)", stdout);
+    return 6;
+  }
+  while (s[l]) {
     putchar(s[l]);
     written++;
     l++;
@@ -16,25 +19,21 @@ int print(char *s, int written)
   return written;
 }
 
-int len(const char str[])
-{
+int len(const char str[]) {
   int l = 0;
-  while (str[l] != '\0')
-  {
+  while (str[l] != '\0') {
     l++;
   }
   return l;
 }
 
-void str_revert(char str[])
-{
+void str_revert(char str[]) {
   int l = len(str) - 1;
   if (l <= 0)
     return;
   int i = 0;
   char tmp;
-  for (; i < l; i++)
-  {
+  for (; i < l; i++) {
     tmp = str[i];
     str[i] = str[l];
     str[l] = tmp;
@@ -42,25 +41,21 @@ void str_revert(char str[])
   }
 }
 
-void my_itoa_base(int n, const char *base, char negative, int written)
-{
+void my_itoa_base(int n, const char *base, char negative, int written) {
   char s[500];
   int i = 0;
   int lb = len(base);
-  if (n == 0)
-  {
+  if (n == 0) {
     s[i] = '0';
     print(s, written);
   }
 
-  if (n < 0 && lb == 10)
-  {
+  if (n < 0 && lb == 10) {
     negative = 1;
     n = -n;
   }
 
-  while (n != 0)
-  {
+  while (n != 0) {
     int remainder = n % lb;
     s[i++] = (remainder > 9) ? (remainder - 10) + 'a' : remainder + '0';
     n /= lb;
@@ -74,18 +69,16 @@ void my_itoa_base(int n, const char *base, char negative, int written)
 }
 
 int argument(const char *traverse, va_list args, unsigned int i, int j,
-             int written)
-{
-  switch (*traverse)
-  {
+             int written) {
+  switch (*traverse) {
   case '%':
     putchar('%');
     written++;
     break;
   case 'd':
     j = va_arg(args, int);
-    j < 0 ? my_itoa_base(j, "0123456789", 1, written) :
-      my_itoa_base(j, "0123456789", 0, written);
+    j < 0 ? my_itoa_base(j, "0123456789", 1, written)
+          : my_itoa_base(j, "0123456789", 0, written);
     break;
   case 'u':
     i = va_arg(args, unsigned);
@@ -110,8 +103,7 @@ int argument(const char *traverse, va_list args, unsigned int i, int j,
   return written;
 }
 
-int tinyprintf(const char *format, ...)
-{
+int tinyprintf(const char *format, ...) {
   if (!format || format[0] == '\0')
     return 0;
   const char *traversal;
@@ -122,10 +114,8 @@ int tinyprintf(const char *format, ...)
   va_list arg;
   va_start(arg, format);
 
-  for (traversal = format; *traversal != '\0'; traversal++)
-  {
-    if (*traversal != '%')
-    {
+  for (traversal = format; *traversal != '\0'; traversal++) {
+    if (*traversal != '%') {
       putchar(*traversal);
       written++;
       continue;
