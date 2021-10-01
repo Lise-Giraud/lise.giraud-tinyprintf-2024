@@ -115,7 +115,10 @@ int argument(const char *traverse, va_list args, unsigned int i, int j,
 int tinyprintf(const char *format, ...)
 {
   if (!format || format[0] == '\0')
+  {
+    putchar('\0');
     return 0;
+  }
   const char *traversal;
   int written = 0;
   unsigned int i = 0;
