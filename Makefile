@@ -10,7 +10,7 @@ tinyprintf: tinyprintf.o
 tinyprintf.o: src/tinyprintf.c
 	$(CC) $(CFLAGS) -c -o tinyprintf.o src/tinyprintf.c
 
-check: check.o tinyprintf.o
+check: check.o tinyprintf
 	$(CC) $(LDFLAGS) -c -o check tinyprintf.o check.o
 
 check.o: tests/check.c
