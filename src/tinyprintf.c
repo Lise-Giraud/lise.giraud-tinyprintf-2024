@@ -1,4 +1,5 @@
 #include "tinyprintf.h"
+
 #include <assert.h>
 #include <errno.h>
 #include <stddef.h>
@@ -111,6 +112,10 @@ int argument(const char *traverse, va_list args, unsigned int i, int j,
         i = va_arg(args, unsigned);
         my_itoa_base(i, "0123456789abcdef", 0, written);
         break;
+    default:
+        putchar('%');
+        written += 2;
+        putchar(*traverse);
     }
     return written;
 }
@@ -141,9 +146,4 @@ int tinyprintf(const char *format, ...)
     va_end(arg);
     fflush(stdout);
     return written;
-}
-
-int main(void)
-{
-    tinyprintf(":%d", 0);
 }
