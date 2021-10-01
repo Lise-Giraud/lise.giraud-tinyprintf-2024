@@ -2,8 +2,6 @@ $CC=gcc
 $CFLAGS=-std=c99 -pedantic -Werror -Wall -Wextra
 $LDFLAGS=-lcriterion -fsanitize=address
 
-all: tinyprintf check
-
 tinyprintf: tinyprintf.o
 	$(CC) -o tinyprintf tinyprintf.o
 

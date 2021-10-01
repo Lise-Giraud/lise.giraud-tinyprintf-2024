@@ -1,9 +1,8 @@
-#include "tinyprintf.h"
 #include <assert.h>
 #include <errno.h>
-#include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
+#include "tinyprintf.h"
 
 int len(const char str[]) {
   int l = 0;
